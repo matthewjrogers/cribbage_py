@@ -1,0 +1,105 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Oct 23 12:48:37 2020
+
+Game object for cribbage simulation
+
+@author: Matt Rogers
+"""
+
+class Game(object):
+    def __init__(self):
+        self.winner = deque()
+
+    def simulate(self, n_games):
+        if len(self.winner) > 0:
+            self.winner.clear()
+        
+        for _ in range(n_games):
+            p1, p2, crib = Hand(), Hand(), Hand()
+            d = Deck()
+
+            winner = []
+
+            crib_player = 1
+            peg_pile = []
+
+            while p1.round_score < 121 and p2.round_score < 121:
+                # begin round
+
+                # p1 is odd, p2 is even
+                # if at the beginning of the loop we set the starting to turn to crib_player + 1,
+                # then we know that p2 will always play first when it's p1's crib and vice versa
+
+                turn = crib_player + 1
+
+
+                d.shuffle()
+                h1, h2 = d.deal()
+                p1.choose_hand(h1, crib)
+                p2.choose_hand(h2, crib)
+
+                cut_card = d.cards.pop()
+
+                # peg
+                while sum([len(p1.cards), len(p2.cards)]) > 0:
+                    # if no one can play, empty the peg pile and reset passed flags
+                    if p1.passed == True and p2.passed == True:
+                        d.collect_cards(peg_pile)
+                        p1.passed, p2.passed = False, False
+
+                    if turn % 2 != 0:
+                        p1.peg(peg_pile)
+
+                        if p1.round_score >= 121:
+                            winner.append(1)
+                            break
+                    else:
+                        p2.peg(peg_pile)
+                        if p2.round_score >= 121:
+                            winner.append(2)
+                            break
+
+                    turn += 1
+
+                if len(winner) > 0:
+                    break
+
+                # score hand and crib
+                if crib_player % 2 != 0:
+                    p2.round_score += p2.hand_score
+                    if len(winner) == 0 and p2.round_score >= 121:
+                        winner.append(2)
+
+                    p1.round_score += p1.hand_score
+                    if len(winner) == 0 and p1.round_score >= 121:
+                        winner.append(1)
+
+                    p1.round_score += score_hand(crib.cards, cut_card)
+                    if len(winner) == 0 and p1.round_score >= 121:
+                        winner.append(1)
+
+                else:
+                    p1.round_score += p1.hand_score
+                    if len(winner) == 0 and p1.round_score >= 121:
+                        winner.append(1)
+
+                    p2.round_score += p2.hand_score
+                    if len(winner) == 0 and p2.round_score >= 121:
+                        winner.append(2)
+
+                    p2.round_score += score_hand(crib.cards, cut_card)
+                    if len(winner) == 0 and p2.round_score >= 121:
+                        winner.append(2)
+
+                if len(winner) == 0:
+                    crib.cards.append(cut_card)
+                    d.collect_cards(crib.cards)
+                    p1.passed, p2.passed = False, False
+                else:
+                    break
+
+                crib_player += 1
+
+            self.winner.append(winner[0])
