@@ -11,6 +11,8 @@ Game object for cribbage simulation
 class Game(object):
     def __init__(self):
         self.winner = deque()
+        self.p1_cribs = deque()
+        self.p2_cribs = deque()
 
     def simulate(self, n_games):
         if len(self.winner) > 0:
@@ -21,6 +23,8 @@ class Game(object):
             d = Deck()
 
             winner = []
+            p1_cribs = 0
+            p2_cribs = 0
 
             crib_player = 1
             peg_pile = []
@@ -77,6 +81,7 @@ class Game(object):
                         winner.append(1)
 
                     p1.round_score += score_hand(crib.cards, cut_card)
+                    p1_cribs += 1
                     if len(winner) == 0 and p1.round_score >= 121:
                         winner.append(1)
 
@@ -90,6 +95,7 @@ class Game(object):
                         winner.append(2)
 
                     p2.round_score += score_hand(crib.cards, cut_card)
+                    p2_cribs += 1
                     if len(winner) == 0 and p2.round_score >= 121:
                         winner.append(2)
 
@@ -103,3 +109,5 @@ class Game(object):
                 crib_player += 1
 
             self.winner.append(winner[0])
+            self.p1_cribs.append(p1_cribs)
+            self.p2_cribs.append(p2_cribs)

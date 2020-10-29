@@ -120,6 +120,7 @@ class Hand(Deck):
         
         self.cards.extend([c for c in dealt_cards if c in hands[scores.index(max(scores))]])
         crib.cards.extend([c for c in dealt_cards if c not in hands[scores.index(max(scores))]])
+        self.hand_score = max(scores)
         
         return
     
