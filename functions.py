@@ -9,9 +9,26 @@ Helper functions for cribbage simulation
 """
 
 from itertools import combinations
+from typing import Optional
+from deck_and_card_objects import Card
 
+def score_hand(hand, cut_card : Optional[Card]) -> int:
+    """
+    
 
-def score_hand(hand, cut_card = None) -> int:
+    Parameters
+    ----------
+    hand : Hand
+        A Hand of Cards.
+    cut_card : Optional[Card]
+        Cut card if using for final scoring.
+
+    Returns
+    -------
+    int
+        Score for the combined hand and optional cut card.
+
+    """
     score = 0
     # flush check
     if sum((c[2] == hand[0][2] for c in hand)) == len(hand):
@@ -36,12 +53,28 @@ def score_hand(hand, cut_card = None) -> int:
     # count pairs
     score += sum((c[0].rank == c[1].rank for c in combinations(hand, 2)))*2
 
+    # score runs
     score += score_runs(hand, None)
     
     return score
 
-def score_runs(stack, card) -> int:
+def score_runs(stack, card: Optional[Card]) -> int:
+    """
     
+
+    Parameters
+    ----------
+    stack : Hand
+        Collection of cards, representing either a hand or a pegging pile.
+    card : Card
+        An optional .
+
+    Returns
+    -------
+    int
+        Score for all runs in the collection of cards, or 0 if none present.
+
+    """
     # runs require at least two cards in the stack
     if len(stack) < 2:
         return 0
@@ -73,6 +106,22 @@ def score_runs(stack, card) -> int:
 
         
 def score_peg(card, peg_pile) -> int:
+    """
+    
+
+    Parameters
+    ----------
+    card : Card
+        The card being played
+    peg_pile : Hand
+        A collection of cards already played in pegging.
+
+    Returns 
+    -------
+    int
+        An integer, representing the score for the card played onto the pegging pile.
+
+    """
     peg_score = 0
 
     if len(peg_pile) > 0 and peg_pile[-1].rank == card.rank:
