@@ -9,10 +9,8 @@ Helper functions for cribbage simulation
 """
 
 from itertools import combinations
-from typing import Optional
-from deck_and_card_objects import Card
 
-def score_hand(hand, cut_card : Optional[Card]) -> int:
+def score_hand(hand, cut_card = None) -> int:
     """
     
 
@@ -58,7 +56,7 @@ def score_hand(hand, cut_card : Optional[Card]) -> int:
     
     return score
 
-def score_runs(stack, card: Optional[Card]) -> int:
+def score_runs(stack, card) -> int:
     """
     
 
