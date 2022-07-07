@@ -11,6 +11,7 @@ Deck and card objects for cribbage simulation
 from collections import namedtuple, deque
 from itertools import combinations
 import random
+from functions import score_hand, score_peg
 
 class Card(namedtuple('Card', ['rank', 'value', 'suit'])):
     """A tuple that represents playing cards in the form (RANK, VALUE, SUIT)."""

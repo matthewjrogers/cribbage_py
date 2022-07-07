@@ -7,6 +7,9 @@ Game object for cribbage simulation
 
 @author: Matt Rogers
 """
+from collections import  deque
+from deck_and_card_objects import Hand, Deck
+from functions import score_hand, score_peg
 
 class Game(object):
     def __init__(self):
@@ -71,6 +74,7 @@ class Game(object):
                     break
 
                 # score hand and crib
+                # TODO: remove code repetition here -- abstract to function
                 if crib_player % 2 != 0:
                     p2.round_score += p2.hand_score
                     if len(winner) == 0 and p2.round_score >= 121:
