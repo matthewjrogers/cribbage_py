@@ -11,7 +11,7 @@ Helper functions for cribbage simulation
 from itertools import combinations
 
 
-def score_hand(hand, cut_card = None):
+def score_hand(hand, cut_card = None) -> int:
     score = 0
     # flush check
     if sum((c[2] == hand[0][2] for c in hand)) == len(hand):
@@ -36,27 +36,11 @@ def score_hand(hand, cut_card = None):
     # count pairs
     score += sum((c[0].rank == c[1].rank for c in combinations(hand, 2)))*2
 
-    score += run_check(hand, None)
-    # # count runs
-    # combns = []
-
-    # for i in range(len(hand), 2, -1):
-    #     combns.extend([sorted(c) for c in combinations(hand, i)])
-
-    # max_run_len = 3
-
-    # for c in combns:
-    #     if all((b.rank - a.rank == 1 for a, b in zip(c[: -1], c[1 :]))):   
-    #         if len(c) < max_run_len:
-    #             break
-    #         else:
-    #             max_run_len = len(c)
-    #             score += len(c)
-
+    score += score_runs(hand, None)
     
     return score
 
-def run_check(stack, card):
+def score_runs(stack, card) -> int:
     
     # runs require at least two cards in the stack
     if len(stack) < 2:
@@ -88,7 +72,7 @@ def run_check(stack, card):
 
 
         
-def score_peg(card, peg_pile):
+def score_peg(card, peg_pile) -> int:
     peg_score = 0
 
     if len(peg_pile) > 0 and peg_pile[-1].rank == card.rank:
@@ -105,7 +89,7 @@ def score_peg(card, peg_pile):
 
             peg_score += 2
     
-    peg_score += run_check(peg_pile, card)
+    peg_score += score_runs(peg_pile, card)
 
     if sum([c.rank for c in peg_pile]) < 15 and (card + sum(peg_pile)) == 15:
 
