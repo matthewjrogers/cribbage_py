@@ -74,6 +74,7 @@ class Game(object):
                     break
 
                 # score hand and crib
+                # TODO: remove code repetition here -- abstract to function
                 if crib_player % 2 != 0:
                     p2.round_score += p2.hand_score
                     if len(winner) == 0 and p2.round_score >= 121:
