@@ -8,6 +8,8 @@ Game object for cribbage simulation
 @author: Matt Rogers
 """
 from collections import  deque
+from deck_and_card_objects import Hand, Deck
+from functions import score_hand, score_peg
 
 class Game(object):
     def __init__(self):

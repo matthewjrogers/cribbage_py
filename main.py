@@ -6,4 +6,8 @@ Created on Thu Jul  7 10:15:22 2022
 """
 
 from game_object import Game
-import deck_and_card_objects
+
+monte_carlo = Game()
+
+monte_carlo.simulate(10)
+monte_carlo.winner
