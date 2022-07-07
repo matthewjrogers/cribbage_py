@@ -7,6 +7,7 @@ Game object for cribbage simulation
 
 @author: Matt Rogers
 """
+from collections import  deque
 
 class Game(object):
     def __init__(self):

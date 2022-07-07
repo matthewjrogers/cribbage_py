@@ -8,6 +8,9 @@ Helper functions for cribbage simulation
 @author: Matt Rogers
 """
 
+from itertools import combinations
+
+
 def score_hand(hand, cut_card = None):
     score = 0
     # flush check
@@ -78,7 +81,7 @@ def score_peg(card, peg_pile):
 
         if len(peg_pile) >= 3 and all([c == peg_pile[-1] for c in peg_pile[-3:]]):
 
-            player_score += 12
+            peg_score += 12
 
         elif len(peg_pile) >= 2 and all([c == peg_pile[-1] for c in peg_pile[-2:]]):
 
