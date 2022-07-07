@@ -59,8 +59,8 @@ def score_hand(hand, cut_card = None):
 def run_check(stack, card):
     
     # runs require at least two cards in the stack
-    if len(stack) == 1:
-        return [False, 0]
+    if len(stack) < 2:
+        return 0
     
     else:
         full_stack = sorted(stack + [card])
@@ -78,7 +78,7 @@ def run_check(stack, card):
     if score['rl'] < 3:
         score['rl'] = 0
     
-    return [score['rl'] > 0, score['rl']]
+    return score['rl']
     # # a run is where, in a sorted hand of cards, all of the differences in card ranks == 1
     # if all([b.rank - a.rank == 1 for a, b in zip(full_stack[: -1], full_stack[1 :])]):
 
@@ -107,10 +107,8 @@ def score_peg(card, peg_pile):
         else:
 
             peg_score += 2
-
-    if len(peg_pile) >= 2 and run_check(peg_pile, card)[0]:
-
-        peg_score += run_check(peg_pile, card)[1]
+    
+    peg_score += run_check(peg_pile, card)
 
     if sum([c.rank for c in peg_pile]) < 15 and (card + sum(peg_pile)) == 15:
 
