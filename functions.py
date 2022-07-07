@@ -65,19 +65,25 @@ def run_check(stack, card):
     else:
         full_stack = sorted(stack + [card]) if card is not None else sorted(stack)
 
-    score = {'rl' : 1, 'mult' : 1}
+    score = {'rl' : 1, 'mult' : 1, 'pairs' : set()}
     
     for i, j in zip(range(0, len(full_stack)-1), range(1, len(full_stack))):
         if full_stack[i].rank == full_stack[j].rank:
+            score['pairs'].add(full_stack[i].rank)
             score['mult'] += 1
         elif full_stack[j].rank - full_stack[i].rank == 1:
             score['rl'] += 1
         else:
             if score['rl'] < 3:
                 score['rl'] = 1
+            else:
+                break
     if score['rl'] < 3:
         score['rl'] = 0
     
+    if len(score['pairs']) == 2:
+        score['mult'] += 1
+        
     return score['rl'] * score['mult']
 
 
