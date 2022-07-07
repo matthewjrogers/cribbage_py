@@ -14,7 +14,7 @@ from itertools import combinations
 def score_hand(hand, cut_card = None):
     score = 0
     # flush check
-    if sum([c[2] == hand[0][2] for c in hand]) == len(hand):
+    if sum((c[2] == hand[0][2] for c in hand)) == len(hand):
         
         score += 4
         
@@ -31,27 +31,27 @@ def score_hand(hand, cut_card = None):
     for i in range(len(hand), 1, -1):
         combns.extend([1 for c in combinations(hand, i) if sum(c) == 15])
 
-    score += len(combns)*2
+    score += sum(combns)*2
 
     # count pairs
-    score += sum([c[0].rank == c[1].rank for c in combinations(hand, 2)])*2
+    score += sum((c[0].rank == c[1].rank for c in combinations(hand, 2)))*2
 
-    # count runs
-    combns = []
+    score += run_check(hand, None)
+    # # count runs
+    # combns = []
 
-# TODO -- ensure that this starts with combinations of 5, otherwise this is garbo
-    for i in range(len(hand), 2, -1):
-        combns.extend([sorted(c) for c in combinations(hand, i)])
+    # for i in range(len(hand), 2, -1):
+    #     combns.extend([sorted(c) for c in combinations(hand, i)])
 
-    max_run_len = 3
+    # max_run_len = 3
 
-    for c in combns:
-        if all([b.rank - a.rank == 1 for a, b in zip(c[: -1], c[1 :])]):   
-            if len(c) < max_run_len:
-                break
-            else:
-                max_run_len = len(c)
-                score += len(c)
+    # for c in combns:
+    #     if all((b.rank - a.rank == 1 for a, b in zip(c[: -1], c[1 :]))):   
+    #         if len(c) < max_run_len:
+    #             break
+    #         else:
+    #             max_run_len = len(c)
+    #             score += len(c)
 
     
     return score
@@ -63,7 +63,7 @@ def run_check(stack, card):
         return 0
     
     else:
-        full_stack = sorted(stack + [card])
+        full_stack = sorted(stack + [card]) if card is not None else sorted(stack)
 
     score = {'rl' : 1, 'mult' : 1}
     
@@ -78,17 +78,8 @@ def run_check(stack, card):
     if score['rl'] < 3:
         score['rl'] = 0
     
-    return score['rl']
-    # # a run is where, in a sorted hand of cards, all of the differences in card ranks == 1
-    # if all([b.rank - a.rank == 1 for a, b in zip(full_stack[: -1], full_stack[1 :])]):
+    return score['rl'] * score['mult']
 
-    #     return [True, len(full_stack)]
-    
-    # else:
-    #     # if the stack is not a run, take the last len(stack)-1 elements and check again
-    #     # TODO -- check both ends for gaps > 1
-    #     # TODO -- is there a dynamic programmin solution here?
-    #     return run_check(stack[-(len(stack) - 1) : ], card)
 
         
 def score_peg(card, peg_pile):
