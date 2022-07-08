@@ -12,8 +12,9 @@ from deck_and_card_objects import Hand, Deck
 from functions import score_hand, score_peg
 
 class Game(object):
-    def __init__(self):
+    def __init__(self, p1_tolerance = 0, p2_tolerance = 0):
         self.winner = deque()
+        self.p1_tolerance, self.p2_tolerance = p1_tolerance, p2_tolerance
         self.p1_cribs = deque()
         self.p2_cribs = deque()
 

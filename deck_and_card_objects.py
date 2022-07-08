@@ -117,9 +117,11 @@ class Deck(object):
 
 class Hand(Deck):
     """A small Deck. Implements methods for hand selection and scoring. Fills role of player."""
-    def __init__(self):
+    def __init__(self, crib_player, risk_tolerance = 0):
         super(Hand, self).__init__()
         self.cards = []
+        self.tolerance = risk_tolerance
+        self.crib_player = crib_player
         self.hand_score = 0
         self.round_score = 0
         self.passed = False
@@ -127,7 +129,9 @@ class Hand(Deck):
     def __str__(self):
         return ' '.join(map(str, self.cards))
   
-    
+    def toggle_crib_player(self):
+        self.crib_player = True if not self.crib_player else False
+        
     def choose_hand(self, dealt_cards, crib):
         '''Select the highest scoring hand from the dealt cards'''
         hands = [c for c in combinations(dealt_cards, 4)]
