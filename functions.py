@@ -27,14 +27,23 @@ def score_hand(hand, cut_card = None) -> int:
         Score for the combined hand and optional cut card.
 
     """
+    assert len(hand) > 0, "Empty hand"
+    assert len(hand[0]) == 3, "Non cards in hand"
+    
+    if cut_card is not None:
+        assert len(cut_card) == 3, "Non card cut card input"
+    
     score = 0
     # flush check
     if sum((c[2] == hand[0][2] for c in hand)) == len(hand):
         
         score += 4
         
-        if cut_card != None and cut_card[2] == hand[0][2]:
-            score += 1
+        if cut_card is not None:
+            # print(cut_card)
+            # print(f"Cut Card Len: {len(cut_card)}  HandLen: {len(hand)}")
+            if cut_card[2] == hand[0][2]:
+                score += 1
     
     if cut_card != None:
         hand = hand + [cut_card]
@@ -142,7 +151,7 @@ def score_peg(card, peg_pile) -> int:
 
         peg_score += 2
 
-    if (card + sum([c.rank for c in peg_pile])) == 31:
+    if (card + sum((c.value for c in peg_pile))) == 31:
         
         peg_score += 2
         

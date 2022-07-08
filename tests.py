@@ -6,7 +6,7 @@ Created on Thu Jul  7 14:11:59 2022
 """
 from deck_and_card_objects import Deck
 from collections import deque
-from functions import run_check
+from functions import run_check, score_hand
 
 #%% function to create a hand
 def make_hand(iterable):
@@ -35,5 +35,11 @@ if __name__ == '__main__':
     assert run_check(doublerun4, None) == 8, "Error in 2 runs, length 4"
     assert run_check(trip_run, None) == 9, "Error in 3 runs, length 3"
     assert run_check(quad_run, None) == 12, "Error in 4 runs, length 3"
-
+#%% test 5 card flush
+    d = Deck()
+    h = [d.cards[i] for i in range(1, 9, 2)]
+    c = d.cards[11]
+    
+    assert score_hand(h, c) == 5, "Error in 5 card flush check"
+    
     print("All Checks Passed")

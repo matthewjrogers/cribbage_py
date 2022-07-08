@@ -34,7 +34,25 @@ class Card(namedtuple('Card', ['rank', 'value', 'suit'])):
         return tuple.__new__(Card, (rank, value, suit))
 
     def __eq__(self, other):
-        if self.rank == other.rank:
+        """
+        
+
+        Parameters
+        ----------
+        other : Card
+            A card
+
+        Returns
+        -------
+        bool
+            Returns True if rank and suit match. Suit matching is important for hand selection.
+            In general Q♥ == Q♣ == Q♦ == Q♠ (i.e. same rank). However, when selecting cards for the crib, this will lead to keeping
+            additional cards and violates rules regarding number of crib and hand cards.
+            
+            In short, this looks wrong, but don't get rid of it because bad things
+
+        """
+        if self.rank == other.rank and self.suit == other.suit:
             return True
         else:
             return False

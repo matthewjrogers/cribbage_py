@@ -46,7 +46,11 @@ class Game(object):
                 h1, h2 = d.deal()
                 p1.choose_hand(h1, crib)
                 p2.choose_hand(h2, crib)
-
+                
+                assert len(crib.cards) == 4, "Unexpected number of crib cards"
+                assert len(p1.cards) == 4, "Unexpected number of crib cards"
+                assert len(p2.cards) == 4, "Unexpected number of crib cards"
+                
                 cut_card = d.cards.pop()
 
                 # peg
