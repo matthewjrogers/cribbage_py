@@ -161,8 +161,22 @@ class Hand(Deck):
             risk_sensitive_scores = [s - 0 if (r - self.tolerance) < 0 else (r - self.tolerance) for s, r in zip(scores, risk)]  
         else:
             risk_sensitive_scores = [s + r for s, r in zip(scores, risk)]
-
-        idx = risk_sensitive_scores.index(max(risk_sensitive_scores))
+        # if rss == max(rss), 1, otherwise 0
+        idcs = [1 if e == max(risk_sensitive_scores) else 0 for e in risk_sensitive_scores]
+        
+        # setting 2 as a decision threshold. 
+        # This is the point at which a player says "I don't care if I throw a pair/fifteen in the crib"
+        # so if tolerance greater than 2, maximize points
+        # otherwise, minimize risk
+        if self.tolerance > 2 or self.crib_player:
+            scores = [s * rs for s, rs in zip(scores, idcs)]
+            # then, from among scores associated with the max risk sensitive score, take the maximum value
+            idx = scores.index(max(scores))
+        else:
+            # scores that are not associated with the maximum risk sensitive score are set to 0
+            risk = [r * rs for r, rs, in zip(risk, idcs)]
+            m = min(enumerate(risk), key=lambda x: x[1] if x[1] > 0 else float('inf'))
+            idx = m[0]
         
         self.cards.extend([c for c in dealt_cards if c in hands[idx]])
         crib.cards.extend([c for c in dealt_cards if c not in hands[idx]])
