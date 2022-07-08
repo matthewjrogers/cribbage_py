@@ -45,7 +45,7 @@ if __name__ == '__main__':
           print("Please input a number between 0 and 4 only...")  
           continue
       
-    n = int(input("Number of games to simulate: "))
+    # n = int(input("Number of games to simulate: "))
     monte_carlo = Game(p1_tol, p2_tol)
     
     monte_carlo.simulate(n)
