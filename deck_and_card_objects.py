@@ -163,13 +163,10 @@ class Hand(Deck):
             risk_sensitive_scores = [s + r for s, r in zip(scores, risk)]
 
         idx = risk_sensitive_scores.index(max(risk_sensitive_scores))
-        hands[idx]
-        throws[idx]
         
-        
-        self.cards.extend([c for c in dealt_cards if c in hands[scores.index(max(scores))]])
-        crib.cards.extend([c for c in dealt_cards if c not in hands[scores.index(max(scores))]])
-        self.hand_score = max(scores)
+        self.cards.extend([c for c in dealt_cards if c in hands[idx]])
+        crib.cards.extend([c for c in dealt_cards if c not in hands[idx]])
+        self.hand_score = scores[idx]
         
         return
     
