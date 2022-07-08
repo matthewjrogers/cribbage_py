@@ -135,11 +135,37 @@ class Hand(Deck):
     def choose_hand(self, dealt_cards, crib):
         '''Select the highest scoring hand from the dealt cards'''
         hands = [c for c in combinations(dealt_cards, 4)]
+        throws = [0]*15
+        risk = [0]*15
         
-        scores = deque()
+        for i in range(15):
+            throws[i] = [c for c in dealt_cards if c not in hands[i]]
+            
+        # score all hands
+        scores = [score_hand(h) for h in hands]
         
-        for hand in hands:
-            scores.append(score_hand(hand)) 
+        # assess thrown cards for risk/opportunity
+        for i in range(len(risk)):
+            risk[i] += sum((c.value == 5 for c in throws[i])) # add one to risk for each 5
+            risk[i] += 2 if sum([throws[i][0].value, throws[i][1].value]) == 15 else 0 # add 2 if throw is a 15
+            risk[i] += 2 if throws[i][0].rank == throws[i][1].rank else 0 # add 2 if throw is a pair
+            risk[i] += 1 if abs(throws[i][0].rank - throws[i][1].rank) == 1 else 0 # add 1 if throw is two consecutive numbers
+            risk[i] += .5 if abs(throws[i][0].rank - throws[i][1].rank) == 2 else 0 # add .5 if throw is either end of a run of 3
+            risk[i] += .25 if abs(throws[i][0].rank - throws[i][1].rank) == 3 else 0 # add .25 if throw is either end of a run of 4
+            risk[i] += .25 if throws[i][0].suit == throws[i][1].suit else 0 # add .25 if throw could contribute to flush in crib
+
+        # calculate risk sensitive scores
+        # if it's not this player's crib, total score minus the difference betwee
+
+        if not self.crib_player:
+            risk_sensitive_scores = [s - 0 if (r - self.tolerance) < 0 else (r - self.tolerance) for s, r in zip(scores, risk)]  
+        else:
+            risk_sensitive_scores = [s + r for s, r in zip(scores, risk)]
+
+        idx = risk_sensitive_scores.index(max(risk_sensitive_scores))
+        hands[idx]
+        throws[idx]
+        
         
         self.cards.extend([c for c in dealt_cards if c in hands[scores.index(max(scores))]])
         crib.cards.extend([c for c in dealt_cards if c not in hands[scores.index(max(scores))]])
