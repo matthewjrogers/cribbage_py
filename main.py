@@ -8,7 +8,7 @@ Created on Thu Jul  7 10:15:22 2022
 from game_object import Game
 
 if __name__ == '__main__':
-    n = int(input())
+    n = int(input("Number of games to simulate: "))
     monte_carlo = Game()
     
     monte_carlo.simulate(n)
