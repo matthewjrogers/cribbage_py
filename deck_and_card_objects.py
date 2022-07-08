@@ -34,7 +34,7 @@ class Card(namedtuple('Card', ['rank', 'value', 'suit'])):
         return tuple.__new__(Card, (rank, value, suit))
 
     def __eq__(self, other):
-        if self.rank == other.rank and self.suit == other.suit:
+        if self.rank == other.rank:
             return True
         else:
             return False

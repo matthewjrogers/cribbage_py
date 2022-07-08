@@ -138,7 +138,7 @@ def score_peg(card, peg_pile) -> int:
     
     peg_score += score_runs(peg_pile, card)
 
-    if sum([c.rank for c in peg_pile]) < 15 and (card + sum(peg_pile)) == 15:
+    if sum((c.value for c in peg_pile)) < 15 and (card + sum(peg_pile)) == 15:
 
         peg_score += 2
 

@@ -4,17 +4,18 @@ Created on Thu Jul  7 14:11:59 2022
 
 @author: mattr
 """
-if __name__ == '__main__':
-    from deck_and_card_objects import Deck
-    from collections import deque
-    from functions import run_check
+from deck_and_card_objects import Deck
+from collections import deque
+from functions import run_check
+
+#%% function to create a hand
+def make_hand(iterable):
+    d = Deck()
+    h = deque()
+    h.extend([d.cards[i] for i in iterable])
+    return h
     
-    #%% function to create a hand
-    def make_hand(iterable):
-        d = Deck()
-        h = deque()
-        h.extend([d.cards[i] for i in iterable])
-        return h
+if __name__ == '__main__':
     
     #%% check runs
     r0 = make_hand(range(0, 10, 2))
