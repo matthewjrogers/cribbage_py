@@ -117,7 +117,7 @@ class Deck(object):
 
 class Hand(Deck):
     """A small Deck. Implements methods for hand selection and scoring. Fills role of player."""
-    def __init__(self, crib_player, risk_tolerance = 0):
+    def __init__(self, crib_player = False, risk_tolerance = 0):
         super(Hand, self).__init__()
         self.cards = []
         self.tolerance = risk_tolerance

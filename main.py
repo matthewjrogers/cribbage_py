@@ -46,7 +46,7 @@ if __name__ == '__main__':
           continue
       
     n = int(input("Number of games to simulate: "))
-    monte_carlo = Game()
+    monte_carlo = Game(p1_tol, p2_tol)
     
     monte_carlo.simulate(n)
     

@@ -24,6 +24,7 @@ class Game(object):
         
         for _ in range(n_games):
             p1, p2, crib = Hand(), Hand(), Hand()
+            p1.toggle_crib_player()
             d = Deck()
 
             winner = []
@@ -114,7 +115,8 @@ class Game(object):
                     p1.passed, p2.passed = False, False
                 else:
                     break
-
+                p1.toggle_crib_player()
+                p2.toggle_crib_player()
                 crib_player += 1
 
             self.winner.append(winner[0])
