@@ -158,7 +158,7 @@ class Hand(Deck):
         # if it's not this player's crib, total score minus the difference betwee
 
         if not self.crib_player:
-            risk_sensitive_scores = [s - 0 if (r - self.tolerance) < 0 else (r - self.tolerance) for s, r in zip(scores, risk)]  
+            risk_sensitive_scores = [s if (r - self.tolerance) < 0 else s - (r - self.tolerance) for s, r in zip(scores, risk)]  
         else:
             risk_sensitive_scores = [s + r for s, r in zip(scores, risk)]
         # if rss == max(rss), 1, otherwise 0
